@@ -46,11 +46,13 @@ function countdown(t) {
 
 function resizeCountdowns() {
   //resize text
-  var cdWidth = document.querySelectorAll(".cd")[0].clientWidth;
-  document.body.style.fontSize = cdWidth / 5.5;
-  for (var i = 0; i < 4; i++) {
-    document.querySelectorAll(".d")[i].style.fontSize = cdWidth / 1.5;
-    document.querySelectorAll(".l")[i].style.fontSize = cdWidth / 5.5;
+  if (document.querySelector(".cd")) {
+    var cdWidth = document.querySelectorAll(".cd")[0].clientWidth;
+    document.body.style.fontSize = cdWidth / 5.5;
+    for (var i = 0; i < 4; i++) {
+      document.querySelectorAll(".d")[i].style.fontSize = cdWidth / 1.5;
+      document.querySelectorAll(".l")[i].style.fontSize = cdWidth / 5.5;
+    }
   }
   //resize body
   document.body.style.height = document.querySelector("#content").clientHeight;

@@ -8,9 +8,11 @@ else {
 }
 if (isset($_GET['tz'])) {
 	$tz = (int) ($_GET['tz']);
+	$tz_unset = 0;
 }
 else {
-	$tz = -5;
+	$tz = 0;
+	$tz_unset = 1;
 }
 if (isset($_GET['font'])) {
 	$font = $_GET['font'];
@@ -19,18 +21,18 @@ else {
 	$font = "Open Sans";
 }
 if (isset($_GET['bg'])) {
-	if ($_GET['bg'][0] == "#" && (strlen($_GET['bg']) == 4 || strlen($_GET['bg']) == 7)) {
-		$bg = $_GET['bg'];
-	}
-	else if (strlen($_GET['bg']) != 0) {
-		$bg = "url(\"" . $_GET['bg'] . "\")";
-	}
-	else {
+	$bg = $_GET['bg'];
+	if (strlen($_GET['bg']) == 0) {
 		$bg = "#dddddd";
+	}
+	$bgCss = $bg;
+	if ($_GET['bg'][0] != "#" && strlen($_GET['bg']) != 4 && strlen($_GET['bg']) != 7) {
+		$bgCss = "url(\"" . $_GET['bg'] . "\")";
 	}
 }
 else {
 	$bg = "#dddddd";
+	$bgCss = $bg;
 }
 ?>
 <html>
@@ -61,7 +63,7 @@ else {
 	<style>
 		html {
 			background-color: #dddddd;
-			background: <?= $bg; ?>;
+			background: <?= $bgCss; ?>;
 			background-repeat: repeat;
 			background-size: auto 100%;
 			background-position: center top;
@@ -163,7 +165,7 @@ else {
 			var font = document.querySelector('#font').value;
 			var bg = document.querySelector('#bg').value;
 			var newUrl = window.location.origin + window.location.pathname + '?d=' + d;
-			if (utc != -5) { newUrl += '&tz='+encodeURIComponent(utc); }
+			if (utc != '') { newUrl += '&tz='+encodeURIComponent(utc); }
 			if (msg != '') { newUrl += '&msg='+encodeURIComponent(msg); }
 			if (font != '') { newUrl += '&font='+encodeURIComponent(font); }
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
@@ -175,13 +177,13 @@ else {
 		<br>
 		Time: <input type='time' value='" . $time ."' id='t'>
 		<br>
-		UTC Offset: <input type='text' value='" . $tz . "' id='utcInput'>
+		UTC Offset: <input type='text' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
 		<br>
 		Message: <input type='text' value='" . $msg . "' id='msg'>
 		<br>
 		Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
 		<br>
-		Background image or hex code: <input type='text' value='" . $bg . "' id='bg'>
+		Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
 		<br><br>
 		<input type='button' onclick='createCountdown()' value='Create Countdown'>
 	</div>";
@@ -193,7 +195,7 @@ else {
 	<script>
 		function setLocalDate() {
 			var countdownDate = new Date("<?= $cdDate; ?>");
-			var countdownTimezone = <?= $tz; ?>;
+			var countdownTimezone = (!<?= $tz_unset ?>) ? <?= $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
 			var countdownDate = countdownDate.setHours(countdownDate.getHours() + timezoneDiff - countdownTimezone);
 			document.querySelector("#date").innerHTML = "Countdown to " + moment(countdownDate).format("dddd, MMM D, YYYY h:mm A");
 			return countdownDate;
@@ -209,7 +211,10 @@ else {
 				document.querySelector("#timezone").innerHTML = timezoneDiff >= 0 ? "Timezone: " + tz + " (UTC&#x2060;+" + timezoneDiff + ")." : "Timezone: " + tz + " (UTC&#x2060;" + timezoneDiff + ").";
 				countdown(countdownDate);
 			} else {
-				// set date selector to have current date
+				if (<?= $tz_unset; ?>) {
+					var tz = new Date().getTimezoneOffset() / (-60);
+					document.querySelector("#utcInput").value = (tz >= 0) ? "+" + tz : tz;
+				}
 				resizeCountdowns();
 			}
 		}
@@ -260,7 +265,18 @@ else {
 			return this.getTimezoneOffset() < this.stdTimezoneOffset();
 		}
 
-		window.onload = getTimezone();
+		function updateBackground(e) {
+			var value = e.value;
+			if (/^#([0-9A-F]{3}|[0-9A-F]{6})$/gi.test(value)) {
+				document.querySelector("html").style.background = value;
+			} else if (/^http/gi.test(value)) {
+				document.querySelector("html").style.background = "url(" + value + ")";
+			}
+		}
+
+		window.onload = function() {
+			getTimezone();
+		}
 	</script>
 
 </body>

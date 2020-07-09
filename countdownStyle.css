@@ -85,7 +85,7 @@ input#utcInput {
   width: 48px;
 }
 input[type="button"] {
-  margin: 0;
+  margin: 4px 0;
   font-size: 16px;
   border-radius: 7px;
   background: #00796b;
