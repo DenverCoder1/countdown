@@ -1,0 +1,118 @@
+body {
+  text-align: center;
+  margin: auto;
+  background: #fff;
+  color: #212121;
+  max-width: 800px;
+  height: fit-content;
+  height: -moz-fit-content;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -15%;
+  bottom: 0;
+  padding: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  padding: 30px;
+}
+.cd {
+  display: inline-block;
+  width: 22%;
+}
+.cd p {
+  margin: 12px 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-align: center;
+  color: #00796b;
+}
+p#date,
+p#timezone {
+  margin: 20px;
+}
+h2 {
+  margin: 0;
+  padding-top: 0;
+}
+@media only screen and (max-width: 842px) {
+  body {
+    margin: auto 15px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  body {
+    margin: 15px;
+    position: static;
+  }
+  .cd {
+    display: inline-block;
+    width: 44%;
+  }
+}
+@media only screen and (max-height: 690px) {
+  body {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    position: static;
+  }
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"] {
+  position: relative;
+  left: 10px;
+  bottom: 4px;
+  padding: 4px;
+  font-size: 21px;
+  background: #fff;
+  color: #212121;
+  transition: 0.2s ease-out border-bottom;
+  border: none;
+  border-bottom: 2px solid #000000;
+  max-width: 100%;
+}
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus {
+  background: #fff;
+  border-bottom: 2px solid #26a69a;
+  outline: none;
+}
+input#utcInput {
+  width: 48px;
+}
+input[type="button"] {
+  margin: 0;
+  font-size: 16px;
+  border-radius: 7px;
+  background: #00796b;
+  color: #ffffff;
+  border: none;
+  padding: 10px 14px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s ease-out box-shadow;
+  cursor: pointer;
+}
+input[type="button"]:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+a.home {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  background: #fff;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  text-decoration: none;
+  color: #00796b;
+  vertical-align: middle;
+  line-height: 48px;
+  text-align: center;
+  font-size: 36px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
