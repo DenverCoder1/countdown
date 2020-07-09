@@ -91,9 +91,12 @@ else {
 		$home_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 		if ($distance > 0) {
 			$days = floor($distance / (1000 * 60 * 60 * 24));
-			$hours = floor(($distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			$minutes = floor(($distance % (1000 * 60 * 60)) / (1000 * 60));
-			$seconds = floor(($distance % (1000 * 60)) / 1000);
+			$remaining = $distance / (1000 * 60 * 60 * 24) - $days;
+			$hours = floor($remaining * 24);
+			$remaining = $remaining * 24 - $hours;
+			$minutes = floor($remaining * 60);
+			$remaining = $remaining * 60 - $minutes;
+			$seconds = floor($remaining * 60);
 		} else {
 			$days = 0;
 			$hours = 0;
@@ -267,10 +270,15 @@ else {
 
 		function updateBackground(e) {
 			var value = e.value;
+			var html = document.querySelector("html");
 			if (/^#([0-9A-F]{3}|[0-9A-F]{6})$/gi.test(value)) {
-				document.querySelector("html").style.background = value;
+				html.style.background = value;
 			} else if (/^http/gi.test(value)) {
-				document.querySelector("html").style.background = "url(" + value + ")";
+				html.style.background = "url(" + value + ")";
+				html.style.backgroundRepeat = "repeat";
+				html.style.backgroundSize = "auto 100%";
+				html.style.backgroundPosition = "center top";
+				html.style.backgroundAttachment = "fixed";
 			}
 		}
 
