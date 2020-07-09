@@ -8,4 +8,6 @@ Demo: http://eyl327.mywebcommunity.org/countdown/
 
 ![Countdown 1](https://i.imgur.com/BOiMUce.png)
 
-![Countdown 2](https://i.imgur.com/0qjR34X.png)
+![Countdown 2](https://i.imgur.com/VNnadBY.png)
+
+![Countdown 3](https://i.imgur.com/0qjR34X.png)
