@@ -18,6 +18,8 @@ Example:
 
 [http://eyl327.mywebcommunity.org/countdown/?d=20201231T2359&tz=%2B3&msg=New%20Year%27s%20Eve&font=Righteous&bg=https%3A%2F%2Fi.imgur.com%2FHcD6od4.jpg](http://eyl327.mywebcommunity.org/countdown/?d=20201231T2359&tz=%2B3&msg=New%20Year%27s%20Eve&font=Righteous&bg=https%3A%2F%2Fi.imgur.com%2FHcD6od4.jpg)
 
+## Screenshots
+
 ![Create a Countdown](https://i.imgur.com/kvWT0YE.png)
 
 ![Countdown 1](https://i.imgur.com/BOiMUce.png)
