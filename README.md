@@ -2,9 +2,11 @@
 
 Website to display a countdown timer to a specified date.
 
-Demo: http://eyl327.mywebcommunity.org/countdown/
+## Create a countdown using the UI
 
-Create a countdown by passing url parameters:
+View the demo at http://eyl327.mywebcommunity.org/countdown/
+
+## Create a countdown by passing url parameters
 
 Fields:
 
