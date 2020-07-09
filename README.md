@@ -14,7 +14,9 @@ Fields:
 * **font** - a font available from [fonts.google.com](https://fonts.google.com/) (ex. "Roboto")
 * **bg** - background image url (ex. https://i.imgur.com/HcD6od4.jpg) or hex code preceded by %23 (ex. %23111111 for #111111)
 
-Example: http://eyl327.mywebcommunity.org/countdown/?d=20201231T2359&tz=%2B3&msg=New%20Year%27s%20Eve&font=Righteous&bg=https%3A%2F%2Fi.imgur.com%2FHcD6od4.jpg
+Example:
+
+[?d=20201231T2359&tz=%2B3&msg=New%20Year%27s%20Eve&font=Righteous&bg=https%3A%2F%2Fi.imgur.com%2FHcD6od4.jpg](http://eyl327.mywebcommunity.org/countdown/?d=20201231T2359&tz=%2B3&msg=New%20Year%27s%20Eve&font=Righteous&bg=https%3A%2F%2Fi.imgur.com%2FHcD6od4.jpg)
 
 ![Create a Countdown](https://i.imgur.com/kvWT0YE.png)
 
