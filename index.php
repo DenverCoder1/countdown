@@ -7,7 +7,7 @@ else {
 	$msg = "Countdown to Deadline";
 }
 if (isset($_GET['tz'])) {
-	$tz = (int) ($_GET['tz']);
+	$tz = (float) ($_GET['tz']);
 	$tz_unset = 0;
 }
 else {
@@ -199,7 +199,8 @@ else {
 		function setLocalDate() {
 			var countdownDate = new Date("<?= $cdDate; ?>");
 			var countdownTimezone = (!<?= $tz_unset ?>) ? <?= $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
-			var countdownDate = countdownDate.setHours(countdownDate.getHours() + timezoneDiff - countdownTimezone);
+			var hOffset = timezoneDiff - countdownTimezone;
+			countdownDate.setTime(countdownDate.getTime() + (hOffset * 60 * 60 * 1000));
 			document.querySelector("#date").innerHTML = "Countdown to " + moment(countdownDate).format("dddd, MMM D, YYYY h:mm A");
 			return countdownDate;
 		}
