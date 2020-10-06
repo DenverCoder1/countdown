@@ -6,6 +6,22 @@ Website to display a countdown timer to a specified date.
 
 View the demo at http://eyl327.mywebcommunity.org/countdown/
 
+## Contributing
+
+1. Fork this repository to your computer
+
+> `git fork https://github.com/DenverCoder1/countdown.git`
+
+2. Create a new branch
+
+> `git checkout -b new_branch` (where `new_branch` is the feature you are working on)
+
+3. Set up a local or hosted web server to test your code
+
+> [This can be done with XAMPP](https://youtu.be/K-qXW9ymeYQ)
+
+4. When it is ready, submit a PR from your forked repository
+
 ## Create a countdown by passing url parameters
 
 Fields:
