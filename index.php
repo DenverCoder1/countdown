@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (isset($_GET['msg'])) {
 	$msg = $_GET['msg'];
@@ -81,7 +81,7 @@ else {
 </head>
 
 <body>
-	<?
+	<?php
 	if ((isset($_GET['d'])) and (preg_match("/\d{8}T\d{4}/", $_GET['d'])) and (!isset($_GET['create']))) {
 		$cdDate = preg_replace('/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})/', '$1/$2/$3 $4:$5', $_GET['d']);
 		$nowDT = strtotime(gmdate("Y-m-d H:i:s"));
