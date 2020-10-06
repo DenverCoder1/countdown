@@ -58,7 +58,7 @@ else {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" type="image/png" href="favicon.png" />
-	<script src="moment.js"></script>
+	<script src="dayjs.min.js"></script>
 	<link rel="stylesheet" href="countdownStyle.css" />
 	<style>
 		html {
@@ -162,7 +162,7 @@ else {
 		<script>
 		function createCountdown() {
 			var d = new Date(document.querySelector('#d').value + ' ' +document.querySelector('#t').value);
-			d = moment(d).format('YYYYMMDDTHHmm');
+			d = dayjs(d).format('YYYYMMDDTHHmm');
 			var utc = document.querySelector('#utcInput').value;
 			var msg = document.querySelector('#msg').value;
 			var font = document.querySelector('#font').value;
@@ -201,7 +201,7 @@ else {
 			var countdownTimezone = (!<?= $tz_unset ?>) ? <?= $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
 			var hOffset = timezoneDiff - countdownTimezone;
 			countdownDate.setTime(countdownDate.getTime() + (hOffset * 60 * 60 * 1000));
-			document.querySelector("#date").innerHTML = "Countdown to " + moment(countdownDate).format("dddd, MMM D, YYYY h:mm A");
+			document.querySelector("#date").innerHTML = "Countdown to " + dayjs(countdownDate).format("dddd, MMM D, YYYY h:mm A");
 			return countdownDate;
 		}
 
