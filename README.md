@@ -39,7 +39,9 @@ Example:
 
 ## Contributing
 
-1. Fork this repository to your computer
+**Video tutorial: [How to make a Pull Request with Github Desktop](https://youtu.be/mMSOIkkSIag)**
+
+1. Fork this repository and clone your repo to your computer
 
 > `git fork https://github.com/DenverCoder1/countdown.git`
 
@@ -50,5 +52,7 @@ Example:
 3. Set up a local or hosted web server to test your code
 
 > [This can be done with XAMPP](https://youtu.be/K-qXW9ymeYQ)
+
+4. Make your changes to the code
 
 4. When it is ready, submit a PR from your forked repository
