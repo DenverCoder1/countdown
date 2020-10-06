@@ -51,9 +51,9 @@ else {
 		gtag('config', 'UA-37346108-11');
 	</script>
 
-	<title><?= $msg; ?></title>
+	<title><?php echo $msg; ?></title>
 
-	<link href="https://fonts.googleapis.com/css?family=<?= $font; ?>" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=<?php echo $font; ?>" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" type="image/png" href="favicon.png" />
@@ -62,7 +62,7 @@ else {
 	<style>
 		html {
 			background-color: #dddddd;
-			background: <?= $bgCss; ?>;
+			background: <?php echo $bgCss; ?>;
 			background-repeat: repeat;
 			background-size: auto 100%;
 			background-position: center top;
@@ -75,19 +75,21 @@ else {
 		input[type="date"],
 		input[type="time"],
 		input[type="button"] {
-			font-family: "<?= $font; ?>", "Open Sans", "Roboto", sans-serif;
+			font-family: "<?php echo $font; ?>", "Open Sans", "Roboto", sans-serif;
 		}
 	</style>
 </head>
 
 <body>
 	<?php
+
 	if ((isset($_GET['d'])) and (preg_match("/\d{8}T\d{4}/", $_GET['d'])) and (!isset($_GET['create']))) {
 		$cdDate = preg_replace('/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})/', '$1/$2/$3 $4:$5', $_GET['d']);
 		$nowDT = strtotime(gmdate("Y-m-d H:i:s"));
 		$cdDT = strtotime($cdDate) - ($tz * 60 * 60);
 		$distance = ($cdDT - $nowDT - 2) * 1000;
 		$home_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
 		if ($distance > 0) {
 			$days = floor($distance / (1000 * 60 * 60 * 24));
 			$remaining = $distance / (1000 * 60 * 60 * 24) - $days;
@@ -102,6 +104,7 @@ else {
 			$minutes = 0;
 			$seconds = 0;
 		}
+
 		echo "
 	<div id='content'>
 		<h2>" . $msg . "</h2>
@@ -129,14 +132,16 @@ else {
 		<input type='button' onclick='changeTimezone();' value='Change Timezone' id='changeTzButton'>
 	</div>
 	<a href='" . $home_link . ((strpos($home_link, '?') !== false) ? "&create" : "?create") . "' class='home'>+</a>";
+
 	} else {
+
 		$cdDate = "unset";
 		if (isset($_GET['d']) and preg_match("/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})$/", $_GET['d'])) {
 			$datetime = explode("T",$_GET["d"],2);
 			$date = preg_replace("/^(\d{4})(\d{2})(\d{2})$/", "$1-$2-$3", $datetime[0]);
 			$time = preg_replace("/^(\d{2})(\d{2})$/", "$1:$2", $datetime[1]);
-		}
-		else {
+
+		} else {
 			$date = date("Y-m-d");
 			$time = "23:59";
 		}
@@ -196,8 +201,8 @@ else {
 
 	<script>
 		function setLocalDate() {
-			var countdownDate = new Date("<?= $cdDate; ?>");
-			var countdownTimezone = (!<?= $tz_unset ?>) ? <?= $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
+			var countdownDate = new Date("<?php echo $cdDate; ?>");
+			var countdownTimezone = (!<?php echo $tz_unset ?>) ? <?php echo $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
 			var hOffset = timezoneDiff - countdownTimezone;
 			countdownDate.setTime(countdownDate.getTime() + (hOffset * 60 * 60 * 1000));
 			document.querySelector("#date").innerHTML = "Countdown to " + dayjs(countdownDate).format("dddd, MMM D, YYYY h:mm A");
@@ -206,7 +211,7 @@ else {
 
 		function getTimezone() {
 			// if valid date
-			if ("<?= $cdDate; ?>" != "unset") {
+			if ("<?php echo $cdDate; ?>" != "unset") {
 				var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 				timezoneDiff = (new Date().getTimezoneOffset()) / (-60);
 				countdownDate = setLocalDate();
@@ -214,7 +219,7 @@ else {
 				document.querySelector("#timezone").innerHTML = timezoneDiff >= 0 ? "Timezone: " + tz + " (UTC&#x2060;+" + timezoneDiff + ")." : "Timezone: " + tz + " (UTC&#x2060;" + timezoneDiff + ").";
 				countdown(countdownDate);
 			} else {
-				if (<?= $tz_unset; ?>) {
+				if (<?php echo $tz_unset; ?>) {
 					var tz = new Date().getTimezoneOffset() / (-60);
 					document.querySelector("#utcInput").value = (tz >= 0) ? "+" + tz : tz;
 				}
