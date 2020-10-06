@@ -173,13 +173,20 @@ else {
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
 			window.location.href = newUrl.replace(/ +/g,'+');
 		}
+		var tzValue = '';
+		function checkTzValue(input){
+			if(input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '')
+				input.value = tzValue;
+			else
+				tzValue = input.value;
+		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
 		Date: <input type='date' value='" . $date ."' id='d'>
 		<br>
 		Time: <input type='time' value='" . $time ."' id='t'>
 		<br>
-		UTC Offset: <input type='text' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
+		UTC Offset: <input type='text' onkeyup='checkTzValue(this);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
 		<br>
 		Message: <input type='text' value='" . $msg . "' id='msg'>
 		<br>
