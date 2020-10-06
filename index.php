@@ -175,10 +175,11 @@ else {
 		}
 		var tzValue = '';
 		function checkTzValue(input){
-			if(input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '')
+			if (input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '') {
 				input.value = tzValue;
-			else
+			} else {
 				tzValue = input.value;
+			}
 		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
@@ -223,7 +224,9 @@ else {
 			} else {
 				if (<?= $tz_unset; ?>) {
 					var tz = new Date().getTimezoneOffset() / (-60);
-					document.querySelector("#utcInput").value = (tz >= 0) ? "+" + tz : tz;
+					var tzText = (tz >= 0) ? "+" + tz : tz;
+					document.querySelector("#utcInput").value = tzText;
+					tzValue = tzText;
 				}
 				resizeCountdowns();
 			}
