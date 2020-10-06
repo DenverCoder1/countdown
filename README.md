@@ -2,6 +2,13 @@
 
 Website to display a countdown timer to a specified date.
 
+## Table of Contents
+
+* [Create a countdown using the UI](#create-a-countdown-using-the-ui)
+* [Create a countdown by passing url parameters](#create-a-countdown-by-passing-url-parameters)
+* [Screenshots](#screenshots)
+* [Contributing](#contributing)
+
 ## Create a countdown using the UI
 
 View the demo at http://eyl327.mywebcommunity.org/countdown/
