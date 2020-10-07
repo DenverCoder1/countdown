@@ -55,4 +55,4 @@ Example:
 
 4. Make your changes to the code
 
-4. When it is ready, submit a PR from your forked repository
+5. When it is ready, submit a PR from your forked repository

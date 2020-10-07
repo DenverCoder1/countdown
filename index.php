@@ -183,6 +183,7 @@ else {
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
 			window.location.href = newUrl.replace(/ +/g,'+');
 		}
+    
 		var tzHour = '';
 		var tzMin = '';
 		function checkTzValue(input){
