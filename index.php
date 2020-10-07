@@ -167,6 +167,12 @@ else {
 			var d = new Date(document.querySelector('#d').value + ' ' +document.querySelector('#t').value);
 			d = dayjs(d).format('YYYYMMDDTHHmm');
 			var utc = document.querySelector('#utcInput').value;
+			var parts = utc.split(':');
+			if (parts.length == 2) {
+				var hours = parseInt(parts[0]);
+				var minutes = parseInt(parts[1]);
+				utc = hours + minutes / 60;
+			}
 			var msg = document.querySelector('#msg').value;
 			var font = document.querySelector('#font').value;
 			var bg = document.querySelector('#bg').value;
@@ -177,13 +183,49 @@ else {
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
 			window.location.href = newUrl.replace(/ +/g,'+');
 		}
-		var tzValue = '';
+		var tzHour = '';
+		var tzMin = '';
 		function checkTzValue(input){
-			if (input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '') {
-				input.value = tzValue;
-			} else {
-				tzValue = input.value;
+			var val = input.value.split(':');
+				
+			var h = val[0].match(/^([+-](\d+)?)?$/);
+			if (h == null) {
+				input.value = tzHour;
+				tzMin = '';
+				return;
 			}
+
+			h = parseInt(h[0]);
+			if (isNaN(h) || (h <= 14 && h >= -12)) {
+				tzHour = val[0];
+			} else {
+				input.value = tzHour;
+				tzMin = '';
+				return;
+			}
+
+			if (val.length == 1) {
+				return;
+			} else if (Math.abs(h) != 9 && Math.abs(h) != 3 && !(h > 3 && h <= 6) && h != 8 && h != 10 && h != 12) {
+				input.value = tzHour;
+				return;
+			}
+
+			var m = val[1];
+			if ((h == 8 || h == 12) && m.match(/^(4(5)?)?$/) != null) {
+				tzMin = '45';
+			} else if (h == 5) {
+				if (m.match(/^4(5)?$/) != null) {
+					tzMin = '45';
+				} else if (m.match(/^3(0)?$/) != null) {
+					tzMin = '30';
+				} else {
+					tzMin = '';
+				}
+			} else if (m.match(/^(3(0)?)?$/) != null){
+				tzMin = '30';
+			}
+			input.value = tzHour + ':' + tzMin;
 		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
