@@ -167,6 +167,12 @@ else {
 			var d = new Date(document.querySelector('#d').value + ' ' +document.querySelector('#t').value);
 			d = dayjs(d).format('YYYYMMDDTHHmm');
 			var utc = document.querySelector('#utcInput').value;
+			var parts = utc.split(':');
+			if (parts.length == 2) {
+				var hours = parseInt(parts[0]);
+				var minutes = parseInt(parts[1]);
+				utc = hours + minutes / 60;
+			}
 			var msg = document.querySelector('#msg').value;
 			var font = document.querySelector('#font').value;
 			var bg = document.querySelector('#bg').value;
@@ -177,13 +183,56 @@ else {
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
 			window.location.href = newUrl.replace(/ +/g,'+');
 		}
-		var tzValue = '" . ($tz >= 0 ? "+$tz" : "$tz") . "';
-		function checkTzValue(input){
-			if (input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '') {
-				input.value = tzValue;
-			} else {
-				tzValue = input.value;
+    
+		var tzHour = '';
+		var tzMin = '';
+		function checkTzValue(input, onblur){
+			var val = input.value.split(':');
+				
+			var h = val[0].match(/^([+-](\d+)?)?$/);
+			if (h == null) {
+				input.value = tzHour;
+				tzMin = '';
+				return;
 			}
+
+			h = parseInt(h[0]);
+			if (isNaN(h) || (h <= 14 && h >= -12)) {
+				tzHour = val[0];
+			} else {
+				input.value = tzHour;
+				tzMin = '';
+				return;
+			}
+
+			if (val.length == 1) {
+				return;
+			} else if (Math.abs(h) != 9 && Math.abs(h) != 3 && !(h > 3 && h <= 6) && h != 8 && h != 10 && h != 12) {
+				input.value = tzHour;
+				return;
+			}
+
+			var m = val[1];
+			if (h == 8 || h == 12) {
+				if (m.match(/^(4(5)?)?$/) != null) {
+					tzMin = onblur ? '45' : m;
+				}
+			} else if (h == 5) {
+				if (m.match(/^4(5)?$/) != null) {
+					tzMin = onblur ? '45' : m;
+				} else if (m.match(/^3(0)?$/) != null) {
+					tzMin = onblur ? '30' : m;
+				} else {
+					tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
+					if (onblur) {
+						input.value = tzHour;
+						return;
+					}
+				}
+			} else if (m.match(/^(3(0)?)?$/) != null){
+				tzMin = onblur ? '30' : m;
+			}
+			input.value = tzHour + ':' + tzMin;
 		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
@@ -191,7 +240,7 @@ else {
 		<br>
 		Time: <input type='time' value='" . $time ."' id='t'>
 		<br>
-		UTC Offset: <input type='text' onkeyup='checkTzValue(this);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
+		UTC Offset: <input type='text' onkeyup='checkTzValue(this, false);' onblur='checkTzValue(this, true);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
 		<br>
 		Message: <input type='text' value='" . $msg . "' id='msg'>
 		<br>
@@ -226,12 +275,19 @@ else {
 				document.querySelector("#timezone").innerHTML = timezoneDiff >= 0 ? "Timezone: " + tz + " (UTC&#x2060;+" + timezoneDiff + ")." : "Timezone: " + tz + " (UTC&#x2060;" + timezoneDiff + ").";
 				countdown(countdownDate);
 			} else {
+				var tz;
 				if (<?php echo $tz_unset; ?>) {
-					var tz = new Date().getTimezoneOffset() / (-60);
-					var tzText = (tz >= 0) ? "+" + tz : tz;
-					document.querySelector("#utcInput").value = tzText;
-					tzValue = tzText;
+					tz = new Date().getTimezoneOffset() / (-60);
+				} else {
+					tz = <?php echo $tz; ?>;
 				}
+				var hours = Math.trunc(tz);
+				hours = (hours >= 0) ? "+" + hours : hours;
+				var minutes = (Math.abs(tz) % 1) * 60;
+				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
+				tzHours = hours;
+				tzMin = (minutes == 0) ? '' : minutes;
+				checkTzValue(document.querySelector("#utcInput"),true);
 				resizeCountdowns();
 			}
 		}
