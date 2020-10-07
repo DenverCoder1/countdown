@@ -224,15 +224,18 @@ else {
 					tzMin = onblur ? '30' : m;
 				} else {
 					tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
-					if (onblur) {
-						input.value = tzHour;
-						return;
-					}
 				}
 			} else if (m.match(/^(3(0)?)?$/) != null){
 				tzMin = onblur ? '30' : m;
+			} else if (onblur) {
+				tzMin = '';
 			}
-			input.value = tzHour + ':' + tzMin;
+
+			if (onblur && (tzMin != '30' && tzMin != '45')) {
+				input.value = tzHour;
+			} else {
+				input.value = tzHour + ':' + tzMin;
+			}
 		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
@@ -283,7 +286,7 @@ else {
 				}
 				var hours = Math.trunc(tz);
 				hours = (hours >= 0) ? "+" + hours : hours;
-				var minutes = (Math.abs(tz) % 1) * 60;
+				var minutes = Math.trunc((Math.abs(tz) % 1) * 60);
 				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
 				tzHours = hours;
 				tzMin = (minutes == 0) ? '' : minutes;
