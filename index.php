@@ -154,12 +154,9 @@ else {
 		}
 		@media only screen and (max-width: 565px) {
 			input {
-				display: block !important;
 				margin: 14px 0 10px 0 !important;
 			}
-			#content br {
-				display: none !important;
-			}
+			
 		}
 		</style>
 		<script>
@@ -239,18 +236,38 @@ else {
 		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
-		Date: <input type='date' value='" . $date ."' id='d'>
+		
+		<div>
+				Date: <input type='date' value='" . $date ."' id='d'>
+        </div>
+        <div>
+        		Time: <input type='time' value='" . $time ."' id='t'>
+        </div>
+
+        <div>
+            UTC Offset: <input type='text' onkeyup='checkTzValue(this, false);' onblur='checkTzValue(this, true);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
+             <a href='#' class='tooltip' >
+                ?
+                <span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>
+             </a>
+        </div>
+	
+        <div>
+            Message: <input type='text' value='" . $msg . "' id='msg'>
+        </div>
+
+        <div>
+        		Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
+
+        </div>
+        <div>
+        	Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
+             <a href='#' class='tooltip' >
+                ?
+                <span class='tooltiptext'>A hex code is specified with: #RRGGBB format. For example #ffffff or #000000</span>
+             </a>
+        </div>
 		<br>
-		Time: <input type='time' value='" . $time ."' id='t'>
-		<br>
-		UTC Offset: <input type='text' onkeyup='checkTzValue(this, false);' onblur='checkTzValue(this, true);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
-		<br>
-		Message: <input type='text' value='" . $msg . "' id='msg'>
-		<br>
-		Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
-		<br>
-		Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
-		<br><br>
 		<input type='button' onclick='createCountdown()' value='Create Countdown'>
 	</div>";
 	}
@@ -314,7 +331,11 @@ else {
 				}
 			} else {
 				timezoneDiffText = timezoneDiff >= 0 ? "+" + timezoneDiff : timezoneDiff;
-				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + "<input type='text' value='" + timezoneDiffText + "' id='utcInput'></input>";
+				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + "<input type='text' value='" + timezoneDiffText + "' id='utcInput'></input> " +
+                    "             <a href='#' class='tooltip' >" +
+                    "                ?" +
+                    "                <span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>\n" +
+                    "             </a>";
 				document.querySelector("#changeTzButton").value = "Set Timezone";
 				document.querySelector("#utcInput").focus();
 				document.querySelector("#utcInput").select();
