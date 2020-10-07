@@ -186,7 +186,7 @@ else {
     
 		var tzHour = '';
 		var tzMin = '';
-		function checkTzValue(input){
+		function checkTzValue(input, onblur){
 			var val = input.value.split(':');
 				
 			var h = val[0].match(/^([+-](\d+)?)?$/);
@@ -213,18 +213,24 @@ else {
 			}
 
 			var m = val[1];
-			if ((h == 8 || h == 12) && m.match(/^(4(5)?)?$/) != null) {
-				tzMin = '45';
+			if (h == 8 || h == 12) {
+				if (m.match(/^(4(5)?)?$/) != null) {
+					tzMin = onblur ? '45' : m;
+				}
 			} else if (h == 5) {
 				if (m.match(/^4(5)?$/) != null) {
-					tzMin = '45';
+					tzMin = onblur ? '45' : m;
 				} else if (m.match(/^3(0)?$/) != null) {
-					tzMin = '30';
+					tzMin = onblur ? '30' : m;
 				} else {
-					tzMin = '';
+					tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
+					if (onblur) {
+						input.value = tzHour;
+						return;
+					}
 				}
 			} else if (m.match(/^(3(0)?)?$/) != null){
-				tzMin = '30';
+				tzMin = onblur ? '30' : m;
 			}
 			input.value = tzHour + ':' + tzMin;
 		}
@@ -234,7 +240,7 @@ else {
 		<br>
 		Time: <input type='time' value='" . $time ."' id='t'>
 		<br>
-		UTC Offset: <input type='text' onkeyup='checkTzValue(this);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
+		UTC Offset: <input type='text' onkeyup='checkTzValue(this, false);' onblur='checkTzValue(this, true);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
 		<br>
 		Message: <input type='text' value='" . $msg . "' id='msg'>
 		<br>
