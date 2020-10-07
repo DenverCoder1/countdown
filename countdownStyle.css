@@ -135,7 +135,7 @@ a.home:hover {
 .tooltip .tooltiptext {
   visibility: hidden;
   font-size: 14px;
-  width: 250px;
+  width: 260px;
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -147,7 +147,7 @@ a.home:hover {
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  margin-left: -127px;
+  margin-left: -130px;
 
   /* Fade in tooltip */
   opacity: 0;

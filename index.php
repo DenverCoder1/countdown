@@ -2,22 +2,19 @@
 
 if (isset($_GET['msg'])) {
 	$msg = $_GET['msg'];
-}
-else {
+} else {
 	$msg = "Countdown to Deadline";
 }
 if (isset($_GET['tz'])) {
 	$tz = (float) ($_GET['tz']);
 	$tz_unset = 0;
-}
-else {
+} else {
 	$tz = 0;
 	$tz_unset = 1;
 }
 if (isset($_GET['font'])) {
 	$font = $_GET['font'];
-}
-else {
+} else {
 	$font = "Open Sans";
 }
 if (isset($_GET['bg'])) {
@@ -29,8 +26,7 @@ if (isset($_GET['bg'])) {
 	if ($_GET['bg'][0] != "#" && strlen($_GET['bg']) != 4 && strlen($_GET['bg']) != 7) {
 		$bgCss = "url(\"" . $_GET['bg'] . "\")";
 	}
-}
-else {
+} else {
 	$bg = "#dddddd";
 	$bgCss = $bg;
 }
@@ -131,15 +127,12 @@ else {
 		<input type='button' onclick='changeTimezone();' value='Change Timezone' id='changeTzButton'>
 	</div>
 	<a href='" . $home_link . ((strpos($home_link, '?') !== false) ? "&create" : "?create") . "' class='home'>+</a>";
-
 	} else {
-
 		$cdDate = "unset";
 		if (isset($_GET['d']) and preg_match("/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})$/", $_GET['d'])) {
-			$datetime = explode("T",$_GET["d"],2);
+			$datetime = explode("T", $_GET["d"], 2);
 			$date = preg_replace("/^(\d{4})(\d{2})(\d{2})$/", "$1-$2-$3", $datetime[0]);
 			$time = preg_replace("/^(\d{2})(\d{2})$/", "$1:$2", $datetime[1]);
-
 		} else {
 			$date = date("Y-m-d");
 			$time = "23:59";
@@ -161,112 +154,126 @@ else {
 		</style>
 		<script>
 		function createCountdown() {
-			var d = new Date(document.querySelector('#d').value + ' ' +document.querySelector('#t').value);
+			var d = new Date(
+			  document.querySelector('#d').value +
+				' ' +
+				document.querySelector('#t').value
+			);
 			d = dayjs(d).format('YYYYMMDDTHHmm');
 			var utc = document.querySelector('#utcInput').value;
 			var parts = utc.split(':');
 			if (parts.length == 2) {
-				var hours = parseInt(parts[0]);
-				var minutes = parseInt(parts[1]);
-				utc = hours + minutes / 60;
+			  var hours = parseInt(parts[0]);
+			  var minutes = parseInt(parts[1]);
+			  utc = hours + minutes / 60;
 			}
 			var msg = document.querySelector('#msg').value;
 			var font = document.querySelector('#font').value;
 			var bg = document.querySelector('#bg').value;
 			var newUrl = window.location.origin + window.location.pathname + '?d=' + d;
-			if (utc != '') { newUrl += '&tz='+encodeURIComponent(utc); }
-			if (msg != '') { newUrl += '&msg='+encodeURIComponent(msg); }
-			if (font != '') { newUrl += '&font='+encodeURIComponent(font); }
-			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
-			window.location.href = newUrl.replace(/ +/g,'+');
-		}
-    
-		var tzHour = '';
-		var tzMin = '';
-		function checkTzValue(input, onblur){
+			if (utc != '') {
+			  newUrl += '&tz=' + encodeURIComponent(utc);
+			}
+			if (msg != '') {
+			  newUrl += '&msg=' + encodeURIComponent(msg);
+			}
+			if (font != '') {
+			  newUrl += '&font=' + encodeURIComponent(font);
+			}
+			if (bg != '') {
+			  newUrl += '&bg=' + encodeURIComponent(bg);
+			}
+			window.location.href = newUrl.replace(/ +/g, '+');
+		  }
+		  
+		  var tzHour = '';
+		  var tzMin = '';
+		  function checkTzValue(input, onblur) {
 			var val = input.value.split(':');
-				
+		  
 			var h = val[0].match(/^([+-](\d+)?)?$/);
 			if (h == null) {
-				input.value = tzHour;
-				tzMin = '';
-				return;
+			  input.value = tzHour;
+			  tzMin = '';
+			  return;
 			}
-
+		  
 			h = parseInt(h[0]);
 			if (isNaN(h) || (h <= 14 && h >= -12)) {
-				tzHour = val[0];
+			  tzHour = val[0];
 			} else {
-				input.value = tzHour;
-				tzMin = '';
-				return;
+			  input.value = tzHour;
+			  tzMin = '';
+			  return;
 			}
-
+		  
 			if (val.length == 1) {
-				return;
-			} else if (Math.abs(h) != 9 && Math.abs(h) != 3 && !(h > 3 && h <= 6) && h != 8 && h != 10 && h != 12) {
-				input.value = tzHour;
-				return;
+			  return;
+			} else if (Math.abs(h) != 9 && Math.abs(h) != 3 && !(h > 3 && h <= 6)
+						&& h != 8 && h != 10 && h != 12) {
+			  input.value = tzHour;
+			  return;
 			}
-
+		  
 			var m = val[1];
 			if (h == 8 || h == 12) {
-				if (m.match(/^(4(5)?)?$/) != null) {
-					tzMin = onblur ? '45' : m;
-				}
+			  if (m.match(/^(4(5)?)?$/) != null) {
+				tzMin = onblur ? '45' : m;
+			  }
 			} else if (h == 5) {
-				if (m.match(/^4(5)?$/) != null) {
-					tzMin = onblur ? '45' : m;
-				} else if (m.match(/^3(0)?$/) != null) {
-					tzMin = onblur ? '30' : m;
-				} else {
-					tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
-				}
-			} else if (m.match(/^(3(0)?)?$/) != null){
+			  if (m.match(/^4(5)?$/) != null) {
+				tzMin = onblur ? '45' : m;
+			  } else if (m.match(/^3(0)?$/) != null) {
 				tzMin = onblur ? '30' : m;
+			  } else {
+				tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
+			  }
+			} else if (m.match(/^(3(0)?)?$/) != null) {
+			  tzMin = onblur ? '30' : m;
 			} else if (onblur) {
-				tzMin = '';
+			  tzMin = '';
 			}
-
-			if (onblur && (tzMin != '30' && tzMin != '45')) {
-				input.value = tzHour;
+		  
+			if (onblur && tzMin != '30' && tzMin != '45') {
+			  input.value = tzHour;
 			} else {
-				input.value = tzHour + ':' + tzMin;
+			  input.value = tzHour + ':' + tzMin;
 			}
-		}
+		  }		  
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
-		
+
 		<div>
-				Date: <input type='date' value='" . $date ."' id='d'>
-        </div>
-        <div>
-        		Time: <input type='time' value='" . $time ."' id='t'>
-        </div>
-
-        <div>
-            UTC Offset: <input type='text' onkeyup='checkTzValue(this, false);' onblur='checkTzValue(this, true);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
-             <a href='#' class='tooltip' >
-                ?
-                <span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>
-             </a>
-        </div>
+			Date: <input type='date' value='" . $date . "' id='d'>
+		</div>
 	
-        <div>
-            Message: <input type='text' value='" . $msg . "' id='msg'>
-        </div>
-
-        <div>
-        		Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
-
-        </div>
-        <div>
-        	Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
-             <a href='#' class='tooltip' >
-                ?
-                <span class='tooltiptext'>A hex code is specified with: #RRGGBB format. For example #ffffff or #000000</span>
-             </a>
-        </div>
+		<div>
+			Time: <input type='time' value='" . $time . "' id='t'>
+		</div>
+	
+		<div>
+			UTC Offset: <input type='text' onkeyup='checkTzValue(this, false);' onblur='checkTzValue(this, true);'
+				value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
+			<a href='#' class='tooltip'>?
+				<span class='tooltiptext'>UTC Offset must be a valid timezone, for example -6 or +5:30.</span>
+			</a>
+		</div>
+	
+		<div>
+			Message: <input type='text' value='" . $msg . "' id='msg'>
+		</div>
+	
+		<div>
+			Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
+		</div>
+	
+		<div>
+			Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
+			<a href='#' class='tooltip'>?
+				<span class='tooltiptext'>A hex code is specified with #RRGGBB format, for example #ffffff or #000000.</span>
+			</a>
+		</div>
+	
 		<br>
 		<input type='button' onclick='createCountdown()' value='Create Countdown'>
 	</div>";
@@ -307,7 +314,7 @@ else {
 				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
 				tzHours = hours;
 				tzMin = (minutes == 0) ? '' : minutes;
-				checkTzValue(document.querySelector("#utcInput"),true);
+				checkTzValue(document.querySelector("#utcInput"), true);
 				resizeCountdowns();
 			}
 		}
@@ -332,10 +339,9 @@ else {
 			} else {
 				timezoneDiffText = timezoneDiff >= 0 ? "+" + timezoneDiff : timezoneDiff;
 				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + "<input type='text' value='" + timezoneDiffText + "' id='utcInput'></input> " +
-                    "             <a href='#' class='tooltip' >" +
-                    "                ?" +
-                    "                <span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>\n" +
-                    "             </a>";
+					"<a href='#' class='tooltip'>?" +
+					"<span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>\n" +
+					"</a>";
 				document.querySelector("#changeTzButton").value = "Set Timezone";
 				document.querySelector("#utcInput").focus();
 				document.querySelector("#utcInput").select();

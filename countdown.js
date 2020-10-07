@@ -17,10 +17,11 @@ function countdown(t) {
         el[i].style.color = "#ff2b2b";
         ed[i].style.color = "#ff2b2b";
       }
-    }
-    else {
+    } else {
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     }
@@ -57,10 +58,6 @@ function resizeCountdowns() {
   document.body.style.height = document.querySelector("#content").clientHeight;
 }
 
-window.addEventListener(
-  "resize",
-  function () {
+window.addEventListener("resize", function () {
     resizeCountdowns();
-  },
-  true
-);
+  }, true);
