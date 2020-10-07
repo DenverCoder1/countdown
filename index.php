@@ -4,7 +4,7 @@ if (isset($_GET['msg'])) {
 	$msg = $_GET['msg'];
 }
 else {
-	$msg = "Countdown to Deadline";
+	$msg = "นับถอยหลัง.....";
 }
 if (isset($_GET['tz'])) {
 	$tz = (float) ($_GET['tz']);
@@ -110,18 +110,18 @@ else {
 
 		<div class='cd'>
 			<p id='days' class='d'>" . $days . "</p>
-			<p id='daysLabel' class='l'>DAY" . ($days != 1 ? "S" : "") . "</p>
+			<p id='daysLabel' class='l'>วัน" . ($days != 1 ? "S" : "") . "</p>
 		</div>
 		<div class='cd'>
 			<p id='hours' class='d'>" . $hours . "</p>
-			<p id='hoursLabel' class='l'>HOUR" . ($hours != 1 ? "S" : "") . "</p></div>
+			<p id='hoursLabel' class='l'>ชั่วโมง" . ($hours != 1 ? "S" : "") . "</p></div>
 		<div class='cd'>
 			<p id='minutes' class='d'>" . $minutes . "</p>
-			<p id='minutesLabel' class='l'>MINUTE" . ($minutes != 1 ? "S" : "") . "</p>
+			<p id='minutesLabel' class='l'>นาที" . ($minutes != 1 ? "S" : "") . "</p>
 		</div>
 		<div class='cd'>
 			<p id='seconds' class='d'>" . $seconds . "</p>
-			<p id='secondsLabel' class='l'>SECOND" . ($seconds != 1 ? "S" : "") . "</p>
+			<p id='secondsLabel' class='l'>วินาที" . ($seconds != 1 ? "S" : "") . "</p>
 		</div>
 
 		<p id='date'>..</p>
@@ -187,17 +187,17 @@ else {
 		}
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
-		Date: <input type='date' value='" . $date ."' id='d'>
+		เลือกวันที่: <input type='date' value='" . $date ."' id='d'>
 		<br>
-		Time: <input type='time' value='" . $time ."' id='t'>
+		เลือกเวลา: <input type='time' value='" . $time ."' id='t'>
 		<br>
-		UTC Offset: <input type='text' onkeyup='checkTzValue(this);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
+		ช่วงเวลา: <input type='text' onkeyup='checkTzValue(this);' value='" . ($tz >= 0 ? "+$tz" : "$tz") . "' id='utcInput'>
 		<br>
-		Message: <input type='text' value='" . $msg . "' id='msg'>
+		ข้อความ: <input type='text' value='" . $msg . "' id='msg'>
 		<br>
-		Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
+		ตัวอักษร (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
 		<br>
-		Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
+		ภาพพื้นหลัง (URL) หรือ สี hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
 		<br><br>
 		<input type='button' onclick='createCountdown()' value='Create Countdown'>
 	</div>";
