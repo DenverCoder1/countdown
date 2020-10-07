@@ -177,7 +177,7 @@ else {
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
 			window.location.href = newUrl.replace(/ +/g,'+');
 		}
-		var tzValue = '';
+		var tzValue = '" . ($tz >= 0 ? "+$tz" : "$tz") . "';
 		function checkTzValue(input){
 			if (input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '') {
 				input.value = tzValue;
