@@ -268,12 +268,19 @@ else {
 				document.querySelector("#timezone").innerHTML = timezoneDiff >= 0 ? "Timezone: " + tz + " (UTC&#x2060;+" + timezoneDiff + ")." : "Timezone: " + tz + " (UTC&#x2060;" + timezoneDiff + ").";
 				countdown(countdownDate);
 			} else {
+				var tz;
 				if (<?php echo $tz_unset; ?>) {
-					var tz = new Date().getTimezoneOffset() / (-60);
-					var tzText = (tz >= 0) ? "+" + tz : tz;
-					document.querySelector("#utcInput").value = tzText;
-					tzValue = tzText;
+					tz = new Date().getTimezoneOffset() / (-60);
+				} else {
+					tz = <?php echo $tz; ?>;
 				}
+				var hours = Math.trunc(tz);
+				hours = (hours >= 0) ? "+" + hours : hours;
+				var minutes = (Math.abs(tz) % 1) * 60;
+				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
+				tzHours = hours;
+				tzMin = (minutes == 0) ? '' : minutes;
+				checkTzValue(document.querySelector("#utcInput"));
 				resizeCountdowns();
 			}
 		}
