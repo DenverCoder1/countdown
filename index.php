@@ -287,7 +287,7 @@ else {
 				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
 				tzHours = hours;
 				tzMin = (minutes == 0) ? '' : minutes;
-				checkTzValue(document.querySelector("#utcInput"));
+				checkTzValue(document.querySelector("#utcInput"),true);
 				resizeCountdowns();
 			}
 		}
