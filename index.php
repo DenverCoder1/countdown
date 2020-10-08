@@ -325,21 +325,14 @@ if (isset($_GET['bg'])) {
 
 		function changeTimezone() {
 			if (document.body.contains(document.querySelector("#utcInput"))) {
-				timezoneDiff = document.querySelector("#utcInput").value;
-				if (timezoneDiff == "") {
-					timezoneDiff = 0;
-				} else {
-					timezoneDiff = parseFloat(timezoneDiff);
-				}
-				if (isNaN(timezoneDiff)) {
-					alert("Invalid Timezone. Please enter a number.")
-				} else {
-					document.querySelector("#changeTzButton").value = "Change Timezone";
-					document.getElementById("timezone").innerHTML = timezoneDiff >= 0 ?
-						"Timezone: " + "UTC&#x2060;+" + timezoneDiff + "." :
-						"Timezone: UTC&#x2060;" + timezoneDiff + ".";
-					setLocalDate();
-				}
+				document.querySelector("#changeTzButton").value = "Change Timezone";
+				var input = document.querySelector("#utcInput").value.split(':');
+				var h = input[0].match(/^([+-])?$/) ? '+0' : input[0];
+				var min = '';
+				if (input.length == 2) { min = input[1]; }
+				document.getElementById("timezone").innerHTML = "Timezone: " + "UTC&#x2060;" + 
+					h + (min == '' ? '' : ':' + min) + ".";
+				setLocalDate();
 			} else {
 				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + 
 					"<input type='text' onkeyup='checkTzValue(this,false)' onblur='checkTzValue(this,true)' value='' id='utcInput'></input> " +
