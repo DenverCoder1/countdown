@@ -184,61 +184,6 @@ if (isset($_GET['bg'])) {
 			  newUrl += '&bg=' + encodeURIComponent(bg);
 			}
 			window.location.href = newUrl.replace(/ +/g, '+');
-		  }
-		  
-		  var tzHour = '';
-		  var tzMin = '';
-		  function checkTzValue(input, onblur) {
-			var val = input.value.split(':');
-		  
-			var h = val[0].match(/^([+-](\d+)?)?$/);
-			if (h == null) {
-			  input.value = tzHour;
-			  tzMin = '';
-			  return;
-			}
-		  
-			h = parseInt(h[0]);
-			if (isNaN(h) || (h <= 14 && h >= -12)) {
-			  tzHour = val[0];
-			} else {
-			  input.value = tzHour;
-			  tzMin = '';
-			  return;
-			}
-		  
-			if (val.length == 1) {
-			  return;
-			} else if (Math.abs(h) != 9 && Math.abs(h) != 3 && !(h > 3 && h <= 6)
-						&& h != 8 && h != 10 && h != 12) {
-			  input.value = tzHour;
-			  return;
-			}
-		  
-			var m = val[1];
-			if (h == 8 || h == 12) {
-			  if (m.match(/^(4(5)?)?$/) != null) {
-				tzMin = onblur ? '45' : m;
-			  }
-			} else if (h == 5) {
-			  if (m.match(/^4(5)?$/) != null) {
-				tzMin = onblur ? '45' : m;
-			  } else if (m.match(/^3(0)?$/) != null) {
-				tzMin = onblur ? '30' : m;
-			  } else {
-				tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
-			  }
-			} else if (m.match(/^(3(0)?)?$/) != null) {
-			  tzMin = onblur ? '30' : m;
-			} else if (onblur) {
-			  tzMin = '';
-			}
-		  
-			if (onblur && tzMin != '30' && tzMin != '45') {
-			  input.value = tzHour;
-			} else {
-			  input.value = tzHour + ':' + tzMin;
-			}
 		  }		  
 		</script>
 		<h2 style='font-size: 35px;margin-bottom: 17px;padding: 0;'>Create a Countdown</h2>
@@ -283,6 +228,71 @@ if (isset($_GET['bg'])) {
 	<script src="countdown.js"></script>
 
 	<script>
+		var tzHour = '';
+		var tzMin = '';
+		function checkTzValue(input, onblur) {
+			var val = input.value.split(':');
+		  
+			var h = val[0].match(/^([+-](\d+)?)?$/);
+			if (h == null) {
+				input.value = tzHour;
+				tzMin = '';
+				return;
+			}
+		  
+			h = parseInt(h[0]);
+			if (isNaN(h) || (h <= 14 && h >= -12)) {
+			  	tzHour = val[0];
+			} else {
+				input.value = tzHour;
+				tzMin = '';
+				return;
+			}
+		  
+			if (val.length == 1) {
+			  	return;
+			} else if (Math.abs(h) != 9 && Math.abs(h) != 3 && !(h > 3 && h <= 6) && h != 8 && h != 10 && h != 12) {
+				input.value = tzHour;
+				return;
+			}
+		  
+			var m = val[1];
+			if (h == 8 || h == 12) {
+				if (m.match(/^(4(5)?)?$/) != null) {
+					tzMin = onblur ? '45' : m;
+				}
+			} else if (h == 5) {
+				if (m.match(/^4(5)?$/) != null) {
+					tzMin = onblur ? '45' : m;
+				} else if (m.match(/^3(0)?$/) != null) {
+					tzMin = onblur ? '30' : m;
+				} else {
+					tzMin = m.length == 2 ? m.match(/^\d/)[0] : '';
+				}
+			} else if (m.match(/^(3(0)?)?$/) != null) {
+			  	tzMin = onblur ? '30' : m;
+			} else if (onblur) {
+			  	tzMin = '';
+			}
+		  
+			if (onblur && tzMin != '30' && tzMin != '45') {
+			  	input.value = tzHour;
+			} else {
+			  	input.value = tzHour + ':' + tzMin;
+			}
+		}
+
+		function convertOffsetNotation(dotNotation) {
+			//Convert . notation to : in the #utcInput
+			var hours = Math.trunc(dotNotation);
+			hours = (hours >= 0) ? "+" + hours : hours;
+			var minutes = Math.trunc((Math.abs(dotNotation) % 1) * 60);
+			document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
+			tzHours = hours;
+			tzMin = (minutes == 0) ? '' : minutes;
+			checkTzValue(document.querySelector("#utcInput"), true);
+		}
+
 		function setLocalDate() {
 			var countdownDate = new Date("<?php echo $cdDate; ?>");
 			var countdownTimezone = (!<?php echo $tz_unset ?>) ? <?php echo $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
@@ -308,40 +318,31 @@ if (isset($_GET['bg'])) {
 				} else {
 					tz = <?php echo $tz; ?>;
 				}
-				var hours = Math.trunc(tz);
-				hours = (hours >= 0) ? "+" + hours : hours;
-				var minutes = Math.trunc((Math.abs(tz) % 1) * 60);
-				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
-				tzHours = hours;
-				tzMin = (minutes == 0) ? '' : minutes;
-				checkTzValue(document.querySelector("#utcInput"), true);
+				convertOffsetNotation(tz);
 				resizeCountdowns();
 			}
 		}
 
 		function changeTimezone() {
 			if (document.body.contains(document.querySelector("#utcInput"))) {
-				timezoneDiff = document.querySelector("#utcInput").value;
-				if (timezoneDiff == "") {
-					timezoneDiff = 0;
-				} else {
-					timezoneDiff = parseFloat(timezoneDiff);
-				}
-				if (isNaN(timezoneDiff)) {
-					alert("Invalid Timezone. Please enter a number.")
-				} else {
-					document.querySelector("#changeTzButton").value = "Change Timezone";
-					document.getElementById("timezone").innerHTML = timezoneDiff >= 0 ?
-						"Timezone: " + "UTC&#x2060;+" + timezoneDiff + "." :
-						"Timezone: UTC&#x2060;" + timezoneDiff + ".";
-					setLocalDate();
-				}
+				checkTzValue(document.querySelector("#utcInput"), true);
+				document.querySelector("#changeTzButton").value = "Change Timezone";
+				var input = document.querySelector("#utcInput").value.split(':');
+				var h = parseInt(input[0]);
+				if (isNaN(h)) { h = 0; }
+				var min = '';
+				if (input.length == 2) { min = input[1]; }
+				document.getElementById("timezone").innerHTML = "Timezone: " + "UTC&#x2060;" + 
+					(h >= 0 ? '+' + h : h) + (min == '' ? '' : ':' + min) + ".";
+				timezoneDiff = h + (min == '' ? 0 : parseInt(min) / 60);
+				setLocalDate();
 			} else {
-				timezoneDiffText = timezoneDiff >= 0 ? "+" + timezoneDiff : timezoneDiff;
-				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + "<input type='text' value='" + timezoneDiffText + "' id='utcInput'></input> " +
+				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + 
+					"<input type='text' onkeyup='checkTzValue(this,false)' onblur='checkTzValue(this,true)' value='' id='utcInput'></input> " +
 					"<a href='#' class='tooltip'>?" +
 					"<span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>\n" +
 					"</a>";
+				convertOffsetNotation(timezoneDiff);
 				document.querySelector("#changeTzButton").value = "Set Timezone";
 				document.querySelector("#utcInput").focus();
 				document.querySelector("#utcInput").select();
