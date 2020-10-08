@@ -334,6 +334,7 @@ if (isset($_GET['bg'])) {
 				if (input.length == 2) { min = input[1]; }
 				document.getElementById("timezone").innerHTML = "Timezone: " + "UTC&#x2060;" + 
 					(h >= 0 ? '+' + h : h) + (min == '' ? '' : ':' + min) + ".";
+				timezoneDiff = h + (min == '' ? 0 : parseInt(min) / 60);
 				setLocalDate();
 			} else {
 				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + 
