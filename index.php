@@ -282,6 +282,17 @@ if (isset($_GET['bg'])) {
 			}
 		}
 
+		function convertOffsetNotation(dotNotation) {
+			//Convert . notation to : in the #utcInput
+			var hours = Math.trunc(dotNotation);
+			hours = (hours >= 0) ? "+" + hours : hours;
+			var minutes = Math.trunc((Math.abs(dotNotation) % 1) * 60);
+			document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
+			tzHours = hours;
+			tzMin = (minutes == 0) ? '' : minutes;
+			checkTzValue(document.querySelector("#utcInput"), true);
+		}
+
 		function setLocalDate() {
 			var countdownDate = new Date("<?php echo $cdDate; ?>");
 			var countdownTimezone = (!<?php echo $tz_unset ?>) ? <?php echo $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
@@ -307,13 +318,7 @@ if (isset($_GET['bg'])) {
 				} else {
 					tz = <?php echo $tz; ?>;
 				}
-				var hours = Math.trunc(tz);
-				hours = (hours >= 0) ? "+" + hours : hours;
-				var minutes = Math.trunc((Math.abs(tz) % 1) * 60);
-				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
-				tzHours = hours;
-				tzMin = (minutes == 0) ? '' : minutes;
-				checkTzValue(document.querySelector("#utcInput"), true);
+				convertOffsetNotation(tz);
 				resizeCountdowns();
 			}
 		}
@@ -336,18 +341,12 @@ if (isset($_GET['bg'])) {
 					setLocalDate();
 				}
 			} else {
-				//timezoneDiffText = timezoneDiff >= 0 ? "+" + timezoneDiff : timezoneDiff;
-				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + "<input type='text' value='' id='utcInput'></input> " +
+				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + 
+					"<input type='text' onkeyup='checkTzValue(this,false)' onblur='checkTzValue(this,true)' value='' id='utcInput'></input> " +
 					"<a href='#' class='tooltip'>?" +
 					"<span class='tooltiptext'>UTC-Offset must be a valid timezone for example -6 or +5:30.</span>\n" +
 					"</a>";
-				var hours = Math.trunc(timezoneDiff);
-				hours = (hours >= 0) ? "+" + hours : hours;
-				var minutes = Math.trunc((Math.abs(timezoneDiff) % 1) * 60);
-				document.querySelector("#utcInput").value = hours + (minutes == 0 ? '' : ":" + minutes);
-				tzHours = hours;
-				tzMin = (minutes == 0) ? '' : minutes;
-				checkTzValue(document.querySelector("#utcInput"), true);
+				convertOffsetNotation(timezoneDiff);
 				document.querySelector("#changeTzButton").value = "Set Timezone";
 				document.querySelector("#utcInput").focus();
 				document.querySelector("#utcInput").select();
