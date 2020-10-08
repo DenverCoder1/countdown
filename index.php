@@ -327,11 +327,12 @@ if (isset($_GET['bg'])) {
 			if (document.body.contains(document.querySelector("#utcInput"))) {
 				document.querySelector("#changeTzButton").value = "Change Timezone";
 				var input = document.querySelector("#utcInput").value.split(':');
-				var h = input[0].match(/^([+-])?$/) ? '+0' : input[0];
+				var h = parseInt(input[0]);
+				if (isNaN(h)) { h = 0; }
 				var min = '';
 				if (input.length == 2) { min = input[1]; }
 				document.getElementById("timezone").innerHTML = "Timezone: " + "UTC&#x2060;" + 
-					h + (min == '' ? '' : ':' + min) + ".";
+					(h >= 0 ? '+' + h : h) + (min == '' ? '' : ':' + min) + ".";
 				setLocalDate();
 			} else {
 				document.querySelector("#timezone").innerHTML = "Timezone: UTC" + 
