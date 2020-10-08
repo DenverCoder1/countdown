@@ -325,6 +325,7 @@ if (isset($_GET['bg'])) {
 
 		function changeTimezone() {
 			if (document.body.contains(document.querySelector("#utcInput"))) {
+				checkTzValue(document.querySelector("#utcInput"), true);
 				document.querySelector("#changeTzButton").value = "Change Timezone";
 				var input = document.querySelector("#utcInput").value.split(':');
 				var h = parseInt(input[0]);
