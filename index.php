@@ -31,7 +31,8 @@ if (isset($_GET['bg'])) {
 	$bgCss = $bg;
 }
 ?>
-<html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
 
 <head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
