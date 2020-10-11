@@ -34,6 +34,20 @@ else {
 	$bg = "#dddddd";
 	$bgCss = $bg;
 }
+if (isset($_GET['fc'])) {
+	$fc = $_GET['fc'];
+	if (strlen($_GET['fc']) == 0) {
+		$fc = "#00796b";
+	}
+	$fcCss = $fc;
+	if ($_GET['fc'][0] != "#" && strlen($_GET['fc']) != 4 && strlen($_GET['fc']) != 7) {
+		$fcCss = "url(\"" . $_GET['fc'] . "\")";
+	}
+}
+else {
+	$fc = "#00796b";
+	$fcCss = $fc;
+}
 ?>
 <html>
 
@@ -170,13 +184,16 @@ else {
 			var msg = document.querySelector('#msg').value;
 			var font = document.querySelector('#font').value;
 			var bg = document.querySelector('#bg').value;
+			var fc = document.querySelector('#fc').value;
 			var newUrl = window.location.origin + window.location.pathname + '?d=' + d;
 			if (utc != '') { newUrl += '&tz='+encodeURIComponent(utc); }
 			if (msg != '') { newUrl += '&msg='+encodeURIComponent(msg); }
 			if (font != '') { newUrl += '&font='+encodeURIComponent(font); }
 			if (bg != '') { newUrl += '&bg='+encodeURIComponent(bg); }
+			if (fc != '') { newUrl += '&fc='+encodeURIComponent(fc); }
 			window.location.href = newUrl.replace(/ +/g,'+');
 		}
+
 		var tzValue = '';
 		function checkTzValue(input){
 			if (input.value.match(/^[+-](\d+(\.)?(\d+)?)?$/) == null && input.value != '') {
@@ -198,6 +215,8 @@ else {
 		Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
 		<br>
 		Background image URL or hex code: <input type='text' value='" . $bg . "' id='bg' onkeyup='updateBackground(this);'>
+		<br>
+		Font color or hex code: <input type='text' value='" . $fc . "' id='fc'>
 		<br><br>
 		<input type='button' onclick='createCountdown()' value='Create Countdown'>
 	</div>";
@@ -207,6 +226,7 @@ else {
 	<script src="countdown.js"></script>
 
 	<script>
+		
 		function setLocalDate() {
 			var countdownDate = new Date("<?php echo $cdDate; ?>");
 			var countdownTimezone = (!<?php echo $tz_unset ?>) ? <?php echo $tz; ?> : (new Date().getTimezoneOffset()) / (-60);
@@ -296,8 +316,38 @@ else {
 			}
 		}
 
+		function changeFontColor(){
+
+			var url = document.documentURI;
+
+			var myIndex = url.indexOf('fc') + 2;
+
+			var fc = url.substring(url.length,myIndex);
+			
+			var newColor = fc.substring(1,fc.length);
+			
+			var includeBadCharacters = newColor.includes('%23');
+
+			if(includeBadCharacters){
+				newColor = '#' + newColor.slice(3,newColor.length)
+			}
+
+			var txtValues = document.getElementsByClassName('d');
+
+			for (i = 0; i < txtValues.length; i++) {
+	  			txtValues.item(i).style.color = newColor;
+			}
+
+			var txtLabels = document.getElementsByClassName('l');
+
+			for (i = 0; i < txtLabels.length; i++) {
+	  			txtLabels.item(i).style.color = newColor;
+			}
+		}
+
 		window.onload = function() {
 			getTimezone();
+			changeFontColor();
 		}
 	</script>
 
