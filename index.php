@@ -22,6 +22,7 @@ if (isset($_GET['fontColor'])) {
 }
 else {
 	$fontColor = "#00796b";
+}
 if (isset($_GET['bg'])) {
 	$bg = $_GET['bg'];
 	if (strlen($_GET['bg']) == 0) {
@@ -190,6 +191,9 @@ if (isset($_GET['bg'])) {
 			if (font != '') {
 			  newUrl += '&font=' + encodeURIComponent(font);
 			}
+			if (fontColor != '') {
+			  newUrl += '&fontColor=' + encodeURIComponent(fontColor);
+			}			
 			if (bg != '') {
 			  newUrl += '&bg=' + encodeURIComponent(bg);
 			}
