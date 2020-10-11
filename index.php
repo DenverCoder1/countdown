@@ -17,6 +17,12 @@ if (isset($_GET['font'])) {
 } else {
 	$font = "Open Sans";
 }
+if (isset($_GET['fontColor'])) {
+	$fontColor = $_GET['fontColor'];
+}
+else {
+	$fontColor = "#00796b";
+}
 if (isset($_GET['bg'])) {
 	$bg = $_GET['bg'];
 	if (strlen($_GET['bg']) == 0) {
@@ -73,6 +79,9 @@ if (isset($_GET['bg'])) {
 		input[type="time"],
 		input[type="button"] {
 			font-family: "<?php echo $font; ?>", "Open Sans", "Roboto", sans-serif;
+		}
+		.cd p {
+			color: <?php echo $fontColor; ?>;
 		}
 	</style>
 </head>
@@ -170,6 +179,7 @@ if (isset($_GET['bg'])) {
 			}
 			var msg = document.querySelector('#msg').value;
 			var font = document.querySelector('#font').value;
+			var fontColor = document.querySelector('#fontColor').value;
 			var bg = document.querySelector('#bg').value;
 			var newUrl = window.location.origin + window.location.pathname + '?d=' + d;
 			if (utc != '') {
@@ -181,6 +191,9 @@ if (isset($_GET['bg'])) {
 			if (font != '') {
 			  newUrl += '&font=' + encodeURIComponent(font);
 			}
+			if (fontColor != '') {
+			  newUrl += '&fontColor=' + encodeURIComponent(fontColor);
+			}			
 			if (bg != '') {
 			  newUrl += '&bg=' + encodeURIComponent(bg);
 			}
@@ -211,6 +224,10 @@ if (isset($_GET['bg'])) {
 	
 		<div>
 			Font (from Google Fonts): <input type='text' value='" . $font . "' id='font'>
+		</div>
+
+		<div>
+			Font Color: <input type='text' value='" . $fontColor . "' id='fontColor'>
 		</div>
 	
 		<div>
