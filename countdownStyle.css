@@ -31,6 +31,15 @@ p#date,
 p#timezone {
   margin: 20px;
 }
+#days, #hours, #minutes, #seconds {
+  font-size: 600%;
+}
+#daysLabel, #hoursLabel, #minutesLabel, #secondsLabel {
+  font-size: 130%;
+}
+#content {
+  font-size: 130%;
+}
 h2 {
   margin: 0;
   padding-top: 0;

@@ -81,7 +81,7 @@ if (isset($_GET['bg'])) {
 			font-family: "<?php echo $font; ?>", "Open Sans", "Roboto", sans-serif;
 		}
 		.cd p {
-			color: <?php echo $fontColor; ?>;
+			color: <?php echo $fontColor?>;
 		}
 	</style>
 </head>
