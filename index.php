@@ -56,7 +56,7 @@ if (isset($_GET['bg'])) {
 
 	<title><?php echo $msg; ?></title>
 
-	<link href="https://fonts.googleapis.com/css?family=<?php echo $font; ?>" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=<?php echo urlencode($font); ?>" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" type="image/png" href="favicon.png" />
