@@ -246,8 +246,7 @@ if (isset($_GET['bg'])) {
 	<script src="countdown.js"></script>
 
 	<script>
-		var tzHour = '';
-		var tzMin = '';
+		var tzHour = '',tzMin = '';
 		function checkTzValue(input, onblur) {
 			var val = input.value.split(':');
 		  
